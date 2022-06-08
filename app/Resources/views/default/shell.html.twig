@@ -1,0 +1,76 @@
+{% extends 'layouts/normal.html.twig' %}
+
+{% block content %}
+
+<div class="shell">
+<script>
+if (window!=window.top) {
+    window.top.location.reload();
+} else {
+    {% if openWindow %}
+    $(document).ready(function() {
+        window.handleWindowLink("{{ openWindow }}");
+    });
+    {% else %}
+    $(document).ready(function() {
+        window.handleWindowLink("/items/tickets");
+    });
+    {% endif %}
+}
+</script>
+
+{# <link href="assets/ui/styles/kendo.common.min.css" rel="stylesheet" />
+<link href="assets/ui/styles/kendo.default.min.css" rel="stylesheet" />
+<script src="assets/arion/js/jquery.js"></script>
+<script src="assets/arion/js/jquery.form.min.js"></script>
+<script src="assets/arion/js/bootstrap.min.js"></script>
+<script src="assets/arion/js/bootstrap-toggle.min.js"></script>
+<script src="assets/arion/js/main.js"></script>
+<script src="assets/ui/js/kendo.all.min.js"></script>
+ #}
+
+{# <style>
+form {
+    display: inline;
+}
+</style>
+
+<br><br><br><br>
+    <div id="window1" class="window">
+        <div class="client">
+            Test
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var myWindow = $("#window1");
+
+
+            myWindow.kendoWindow({
+                width: "400px",
+                height: "200px",
+                title: "Test window",
+                iframe: true,
+                visible: true,
+                actions: [
+                    "Maximize",
+                    "Close"
+                ]
+            }).data("kendoWindow").center().open();
+        
+
+        var $win = $('#window1');
+        console.log($win);
+        var $parent = $win.parent('.k-window');
+        console.log($parent);
+        var $title = $parent.find('.k-window-title');
+        console.log($title);
+        $title.append($('<form><select><option>one</option><option>two</option></select><button>test</button></form>'));
+
+        });
+    </script>
+ #}
+
+ </div>
+{% endblock %}

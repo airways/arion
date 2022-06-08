@@ -1,0 +1,64 @@
+<form method="post" action="/settings/user">
+<div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">User Settings</h4>
+            </div>
+            <div class="modal-body">
+                <!--<label>User settings coming soon!</label>-->
+
+                {% if message is defined %}
+                    <div class="success">{{ message }}</div>
+                {% endif %}
+                
+                {% if changePassword.message is defined %}
+                    <div class="{% if changePassword.error %}error{% else %}success{% endif %}">{{ changePassword.message|raw }}</div>
+                {% endif %}
+
+                {% if user.userType != "restricted" %}
+                <label for="displayName">Display Name</label>
+                <input type="text" id="displayName" name="settings[displayName]" value="{{ settings.displayName }}"
+                        placeholder="{{ user.username }}" class="form-control" /><br/>
+                <p>This name will be displayed to other users of the site.</p>
+
+                {% endif %}
+
+                <h3>Change Password</h3>
+                <label for="password">Current Password</label>
+                <input type="password" id="password" name="changePassword[currentPassword]" class="form-control" /><br/>
+
+                <label for="newPassword">New Password</label>
+                   <input type="password" id="newPassword" name="changePassword[newPassword]" class="form-control" />
+                </label>
+                <a id="passwordRequirements" href="#" title="Password Requirements"><i class="glyphicon glyphicon-info-sign"></i> Requirements</a>
+                <div id="passwordRequirementsContent">
+                <p>Passwords must:</p>
+                <ul>
+                    <li>be at least 8 characters long</li>
+                    <li>have 1 uppercase letter</li>
+                    <li>have 1 lowercase letter</li>
+                    <li>have 1 number</li>
+                    <li>have 1 symbol</li>
+                    <li>have no whitespace</li>
+                    <li>not be a commonly used password</li>
+                </ul>
+                <p>One good way way to select a strong password is to make up a random number and memorable phrase and use symbols instead of spaces, such as "18This_Is#Awesome?"
+                </div>
+                <br/>
+                
+
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" name="changePassword[confirmPassword]" class="form-control" /><br/>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</form>

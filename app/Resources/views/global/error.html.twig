@@ -1,0 +1,20 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block base_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 panel panel-default">
+                <!-- ERROR -->
+                <br/>
+                <div style="text-align: center;">
+                    <i class="glyphicon glyphicon-thumbs-down" style="font-size: 100px;"></i><br/>
+                    {{random(['boo. sad face.', 'nooooo.', 'aw snap.', 'oops.', 'nuts.', 'ugh, why.'])}}</div>
+                <br/>
+                Unfortunately, a problem has occured.<br/><br/>
+                <div>{{ error_message }} (code={{error}})</div>
+                <br/>
+                Please contact support if you continue to see this message and believe it to be in error.<br/><br/>
+            </div>
+        </div>
+    </div>
+{% endblock %}

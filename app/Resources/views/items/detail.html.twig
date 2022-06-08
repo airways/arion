@@ -1,0 +1,79 @@
+<div class="item-fields inner-panel">
+
+<form method="post" id="item-detail" enctype="multipart/form-data">
+<input type="hidden" name="prev_ver" value="{% if edit is defined and edit.prev_ver %}{{edit.prev_ver}}{% else %}{{get.item.get('ver')}}{% endif %}" />
+
+{% if edit is defined and edit.message %}
+<div class="panel message-panel"><div class="success">{{edit.message|purify}}</div></div>
+{% endif %}
+{% if flash_edit_message is defined and flash_edit_message %}
+<div class="panel message-panel"><div class="success"><!--flash_edit_message-->{{flash_edit_message|purify}}</div></div>
+{% endif %}
+
+
+{% if syncUser is defined and syncUser.message %}
+<div class="panel message-panel"><div class="success">{{syncUser.message|purify}}</div></div>
+{% endif %}
+{% if flash_syncUser_message is defined and flash_syncUser_message %}
+<div class="panel message-panel"><div class="success"><!--flash_syncUser_message-->{{flash_syncUser_message|purify}}</div></div>
+{% endif %}
+
+
+{% if edit is defined and edit.error_message %}
+<div class="panel message-panel"><div class="error">{{edit.error_message|purify}}</div></div>
+{% endif %}
+{% if flash_error_message is defined and flash_error_message %}
+<div class="panel message-panel"><div class="error">{{flash_error_message|purify}}</div></div>
+{% endif %}
+
+<div class="row">
+<div class="itemId col-xs-12 col-sm-12 col-md-12">
+    <h4><small>Created by {{ get.item.createdBy }}
+        on
+        {{ get.item.createdAt|date('M d') }}
+        at
+        {{ get.item.createdAt|date('g:ia') }} &mdash; </small>
+        {{ get.item.get('itemType').label }} No. <em>{{ "%05d"|format(get.item.get('id')) }}</em></h4>
+</div>
+{% for i, field in get.item.fields() %}
+    {% if not auth.isRestrictedUser() or field.visibleToRestrictedUsers %}
+	<div class="field {{ field.cssClass(1) }} {% if get.item.fieldHasConflicts(field.id) %}field-conflict{% endif %}">
+        {% if field.option('showHeading', true) %}
+        {{field.label}}
+        {% else %}
+        {% endif %}
+        {% if get.item.fieldHasConflicts(field.id) %}
+            {% if not field.option('richText') %}
+                <div class="conflict-message">Conflicts:<span>
+                {% for conflict in get.item.getFieldConflicts(field.id) %}
+                    {{ conflict.diff|raw }}
+                {% endfor %}
+                </span></div>
+            {% endif %}
+            
+        {% endif %}
+        
+		{% set fieldRendered = field.render() %}
+        
+        {{fieldRendered|raw}}
+        {% if get.item.fieldHasConflicts(field.id) %}
+            {% if field.option('richText') %}
+                <div><small>(Conflict highlighting is removed automatically on save)</small></div>
+            {% endif %}
+        {% endif %}
+        <br/>
+	</div>
+    {% endif %}
+{% endfor %}
+
+</div>
+
+<div class="item-actions">
+    <button class="btn btn-default btn-primary">Save</button>
+    <div class="item-options">
+        <label><input type="checkbox" name="sendNotifications" value="1" checked="checked" /> Send notifications for this update</label>
+    </div>
+</div>
+</form>
+
+</div>

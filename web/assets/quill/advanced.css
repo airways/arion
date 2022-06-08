@@ -1,0 +1,44 @@
+.basic-wrapper,
+.advanced-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    float: left;
+    margin-bottom: 10px;
+}
+.ql-toolbar {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.basic-wrapper {
+    width: 100%;
+}
+.advanced-wrapper {
+    width: 100%;
+    min-height: 150px;
+    background: white;
+}
+.ql-container div {
+    font-size: 14px;
+}
+.editor-container {
+    height: 400px;
+}
+.toolbar-container {
+    border-bottom: 1px solid #ccc;
+}
+.basic-wrapper .toolbar-container {
+    padding: 8px 14px;
+}
+.basic-wrapper .toolbar-container .ql-active,
+.basic-wrapper .toolbar-container button:hover {
+    color: #008000;
+    font-weight: bold;
+}
+
+.ql-toolbar,
+.ql-container,
+.ql-editor {
+    background: white;
+}
+

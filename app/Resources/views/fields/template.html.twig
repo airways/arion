@@ -1,0 +1,17 @@
+<div class="template">
+{#
+    {% for subFieldId, subField in value %}
+        {% for field in field.getSubFields() %}
+            <div class="field {{ field.cssClass }}">
+                {% if field.option('showHeading', true) %}
+                {{field.label}}
+                {% else %}
+                {% endif %}
+                {{field.render(false, false, subFieldId, subField)|raw}}
+                <br/>
+            </div>
+        {% endfor %}
+        </div>
+    {% endfor %}
+#}
+</div>

@@ -1,0 +1,92 @@
+
+{% set lastSubValueId = -1 %}
+{% set vars = {
+              
+              'fieldLabel': field.option('newRowLabel', 'New Row'),
+              'value': '',
+              'visibleToRestrictedUsers': field.visibleToRestrictedUsers,
+              'options': {
+                'richText': field.option('richText'),
+                'rows': field.option('rows', 10),
+                'fontSize': field.option('fontSize'),
+                'minHeight': field.option('minHeight', 100)
+                }} %}
+
+<ul class="multitext">
+    {# <tr>
+        <th>{{ field.option('valueHeading', 'Value') }}</th><th>{% if field.option('editable') %}Remove{% else %}&nbsp;{% endif %}</th>
+    </tr> #}
+{% if values[0] is defined %}
+{% for subValueId, value in values[0] %}
+    {% set lastSubValueId = subValueId %}
+        {% if value|length > 100 and (valuesMeta[0][subValueId].createdAt < date().format('U') - 60*60*24)%}
+        <li {# id="{{ field.id }}_{{ subValueId }}" #} class="collapsed">
+
+        <div class="summary">
+            {{ value[:100]|striptags }}...
+        </div>
+
+        <div class="multi-value" style="display: none;">
+        {% else %}
+        <li>
+        <div class="multi-value">
+        {% endif %}
+            <!-- {{ subValueId }} -->
+            {% if field.option('editable') or (valuesMeta[0][subValueId].createdByUserId == auth.getUserId() and valuesMeta[0][subValueId].createdAt >= date().format('U') - 60*5 ) %}
+                {% set vars = vars|merge({
+                    'value': value,
+                    'fieldName': "item[#{ item.get('id') }][#{ field.name }][0][#{ subValueId }]"}) %}
+                
+                {% include 'fields/partials/textareaPartial.html.twig' with vars only %}
+            {% else %}
+                {% if ('<p>' in value or '<div>' in value or '<blockquote>' in value) %}
+                    <!-- HTML -->
+                    <div>{{ value|replace({'  ': '&nbsp;&nbsp;'})|purify }}</div>
+                {% else %}
+                    <!-- TEXT -->
+                    <div>{{ value|escape|nl2br|replace({'  ': '&nbsp;&nbsp;'})|processMacros|purify }}</div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="byline">
+        <span class="hide-collapsed">&mdash; 
+            Posted by</span>
+            <span class="name">{{ valuesMeta[0][subValueId].createdBy }}</span>
+            <span class="hide-collapsed">on</span>
+            {{ valuesMeta[0][subValueId].createdAt|date('M d') }}
+            at
+            {{ valuesMeta[0][subValueId].createdAt|date('g:ia') }}
+
+        {% if (valuesMeta[0][subValueId].createdByUserId == auth.getUserId() and valuesMeta[0][subValueId].createdAt >= date().format('U') - 60*5 ) %}
+            {% if not field.option('editable') %}<small>(editable until about {{ valuesMeta[0][subValueId].createdAt|date_modify("+5 minutes")|date("g:ia") }})</small>{% endif %}
+        {% endif %}
+
+
+        </div>
+    
+    {# <td class="multi-remove">
+        {% if field.option('editable') %}
+            <input type="checkbox" name="cmd[{{ item.get('id') }}][{{ field.name }}][0][{{ subValueId }}]" value="delete" />
+        {% else %}
+            &nbsp;
+        {% endif %}
+    </td>
+    </tr> #}
+    </li>
+{% endfor %}
+{% endif %}
+</ul>
+
+<tr>
+    <td class="multi-value">
+        {% set vars = vars|merge({
+                'value': '',
+                'fieldName': "item[#{ item.get('id') }][#{ field.name }][0][#{ lastSubValueId+1 }]"}) %}
+        {% include 'fields/partials/textareaPartial.html.twig' with vars only %}
+
+    </td>
+    <td class="multi-remove">
+        &nbsp;
+    </td>
+</tr>
+</table>

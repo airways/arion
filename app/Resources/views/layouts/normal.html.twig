@@ -1,0 +1,84 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block base_head %}
+    <style>
+    html {
+        background: black url({{ asset('assets/arion/images/background.jpg') }}) no-repeat center top fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+    </style>
+{% endblock %}
+
+{% block base_content %}
+    <!-- NORMAL -->
+    <div class="container root-container">
+        <nav class="row navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Arion CRM/PM</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav main-menu">
+                        {% if not site.isAuthRequest() %}
+                                {% if auth.isLoggedIn() %}
+                                    {% for itemType in site.getItemTypesForActiveUser() %}
+                                        {% if not auth.isRestrictedUser() or itemType.visibleToRestrictedUsers %}
+                                        <li {% if itemType.pluralName == site.currentItemTypeName() %}class="active"{% endif %}><a href="/{{ site.actionUrl }}items/{{ itemType.pluralName }}" data-window-id="{{ itemType.pluralName }}" data-window-title="{{ itemType.pluralLabel }}">{{ itemType.pluralLabel }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <!-- <li><a href="/files" data-window-id="files" data-window-title="Files">Files</a></li> -->
+                                    {# {% if not auth.isRestrictedUser() %}
+                                    <li {% if site.onMailbox() %}class="active"{% endif %}><a href="/mailbox/index" data-window-id="mailbox" data-window-title="Mailbox">Mailbox</a></li>
+                                    {% endif %} #}
+
+                                {% else %}
+                                    <li><a href="{{ site.actionUrl }}auth/login">Login</a></li>
+                                {% endif %}
+                        {% endif %}
+
+                    </ul>
+                    
+                    {% if auth.isLoggedIn() %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-header">Hello, {{ auth.user.name }}!</li>
+                                <li><a id="userSettings" href="/settings/user">Settings...</a></li>
+                                <!--<li><a href="#">Subscription...</a></li>-->
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/auth/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-right" role="search" action="/items/tickets" id="search">
+                        <div class="form-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search" value="{{ site.searchQuery }}">
+                        </div>
+                        
+                    </form>                    {% endif %}
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        
+        {% block content %}{% endblock %}
+
+        <div id="footer" class="row panel">
+            <small>Copyright &copy;2015-{{ "now"|date("Y") }}. MetaSushi LLC. All rights reserved. Wallpaper credits on login screen.</small>
+        </div>
+
+    </div> <!-- //container -->
+{% endblock %}

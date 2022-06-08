@@ -1,0 +1,588 @@
+
+/*
+ * @package ArionCRM
+ * @author Isaac Raway <iraway@metasushi [dot] com>
+ * @author Antoinette Smith <asmith@metasushi [dot] com>
+ * @link http://arioncrm.com/
+ * @copyright (c)2015-2022. MetaSushi, LLC. All rights reserved. Your use of this software in any way indicates agreement
+ * to the software license available currenty at http://arioncrm.com/ 
+ * This open source edition is released under GPL 3.0. available at https://www.gnu.org/licenses/gpl-3.0.en.html
+ */
+
+
+ /* http://css-tricks.com/perfect-full-page-background-image/ */
+html {
+
+}
+
+body {    
+    font-size: 16px;
+    font-family: "Open Sans",serif;
+    background: #BBB;
+}
+
+body.dialog {
+	background: transparent;
+	padding-top: 100px;
+	max-width: 99vh;
+	
+}
+
+h1 {
+    font-family: "Abel", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 40px;
+}
+
+/* Override B3 .panel adding a subtly transparent background */
+.panel {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.margin-base-vertical {
+    margin: 40px 0;
+}
+
+label {
+    font-weight: normal !important;
+}
+
+.shell {
+	
+}
+
+.container {
+	width: 100%;
+}
+
+.message-panel {
+	padding: 10px;
+	margin: 10px;
+}
+.error,
+.error ul
+.error li { 
+	color: red;
+	
+}
+.error {
+	margin-bottom: 10px;
+}
+.success { 
+	color: green;
+	margin-bottom: 10px;
+}
+.loading-icon {
+	display: none;
+	background: url(../images/ajax-loader.gif) no-repeat;
+	padding-left: 20px;
+	margin-left: 10px;
+	min-width: 16px;
+	min-height: 16px;
+}
+.item-loading {
+    text-align: center;
+    margin-top: 50%;
+    margin-bottom: 50%;
+}
+
+.inner-panel {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.tour-create-item i {
+	/* Hide arrow on mobile */
+	display: none;
+}
+@media (min-width: 992px) { 
+	.tour-create-item i {
+		/* Show arrow on desktop */
+		display: inline-block;
+	}
+}
+
+/*
+div.field {
+	width: 100%;
+}
+*/
+.itemId h4 {
+	margin: 0 0 10px 0;
+	text-align: right;
+}
+.itemId h4 em {
+	color: #337ab7;
+	font-style: normal;
+}
+.navbar {
+	margin: 0 0px 10px 0px;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 10090;
+}
+.modal-backdrop {
+	z-index: 10091;
+}
+.modal {
+	z-index: 10092;
+}
+.root-container {
+	padding: 0;
+}
+ul.multitext {
+	list-style: none;
+	padding: 0;
+}
+ul.multitext > li {
+	margin-bottom: 10px;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	padding: 10px;
+	clear:both;
+	min-height: 2.5em;
+}
+ul.multitext > li.collapsed {
+	background: #EEE;
+	cursor: pointer;
+}
+ul.multitext > li .summary {
+	float: left;
+	white-space: nowrap;
+	width: 50%;
+	overflow: hidden;
+	margin-right: 20px;
+}
+ul.multitext > li.collapsed .byline {
+	float:right;
+}
+ul.multitext > li.collapsed .byline span.hide-collapsed {
+	display: none;
+}
+ul.multitext > li.collapsed .byline span.name {
+	font-weight: bold;
+}
+ul.multitext > li .summary:hover {
+	/*background: #FFF;
+	text-decoration: underline;*/
+}
+table.multitext {
+	width: 100%;
+}
+table.multitext td {
+	padding: 2px;
+}
+table.multitext td p {
+	border-bottom: 1px #DDDDDD;
+}
+table .multi-value {
+	width: 100%;
+}
+table .multi-value input {
+	width: 100%;
+}
+table .multi-remove {
+	width: 1%;
+}
+/*.new-item {
+	background: #EFEFEF;
+}*/
+.listing-filters {
+	padding: 0 10px 10px 10px;
+}
+.listing-filters h2 {
+	display: inline-block;
+	width: auto;
+	margin-top: 0;
+}
+.listing-filters label {
+
+}
+.listing-filters .form-control {
+	display: inline-block;
+	width: auto;
+	max-width: 15%;
+}
+.row {
+	padding: 0 10px 0 10px;
+}
+.listing-filters {
+	padding: 0 10px 10px 10px;
+}
+/*
+.list-group {
+	padding-right: 0;
+}
+@media (min-width: 992px) { 
+	.list-group {
+		padding-right: 15px;
+	}
+}
+*/
+.child-listing {
+	margin-top: 10px; 
+}
+.child-listing a.panel { 
+	margin-top: 10px;
+	display: block;
+	background: #ffffe5;
+	padding: 10px;
+}
+.panel-heading h4 {
+	margin: 0;
+}
+.child-listing-wrapper .item-wrapper {
+	margin: -10px;
+}
+.child-listing-wrapper .child-listing {
+	margin: 10px;
+}
+.panel-heading a,
+.child-listing-wrapper .item-wrapper > a {
+	text-decoration: none;
+	color: #555;
+	display: block;
+	margin: 10px 0 10px 0;
+	padding: 5px 10px 5px 10px;
+	border-radius: 4px;
+}
+.child-listing-wrapper a:hover {
+	background: #EEE;
+}
+#footer {
+	background: rgba(255, 255, 255, 0.5);
+	margin: 0 0 20px 0;
+	position: fixed;
+	bottom: 0px;
+	left: 10px;
+}
+#/* TEXT AREA STYLES */
+textarea.auto-expand {
+	overflow: hidden;
+}
+
+.item-actions {
+	margin-top: 20px;
+}
+
+.item-options {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+/* Modals */
+.modal-dialog label {
+	min-width: 25%;
+	display: inline-block;
+}
+.modal-dialog input {
+	width: 40%;
+	display: inline-block;
+	margin: 5px;
+}
+#userSettingsModal {
+	
+}
+#passwordRequirements {
+	text-decoration: none;
+	font-size: 13px;
+}
+#passwordRequirementsContent {
+	display: none;
+}
+#userSettingsModal .popover {
+	width: 300px;
+}
+#item-num-message {
+	display: inline;
+	margin-right: 1em;
+}
+.btn {
+	margin: 4px 4px 4px 0px;
+}
+.btn-secondary {
+	border: 1px solid #AAA;
+	color: #444;
+}
+td.multi-value {
+	padding-top: 20px;
+}
+td.multi-value .byline{
+	padding-bottom: 20px;
+	border-bottom: 1px solid #AAA;
+}
+.internal {
+	background: #FFF3C4;
+}
+.url {
+	
+	display: inline-block;
+	max-width: 700px;
+	overflow: hidden;
+}
+.url:before {
+    font-family: "Glyphicons Halflings";
+    content: "\e066";
+    margin-right: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+.url:before:hover {
+	
+}
+
+
+
+
+/** DIFF **/
+
+.conflict-message {
+	color: red;
+}
+.conflict-message span {
+	color: black;
+}
+
+.diff-html-changed, .diff-html-added, .diff-html-removed {padding: 2px; margin: 2px; display: inline-block;text-decoration: none;}
+.diff-html-changed {background-color: #FFFEE8; border: 1px solid #FFF319;text-decoration: none;}
+.diff-html-added {background-color: #DFF0D8; border: 1px solid #73EF3E; text-decoration: none;}
+.diff-html-removed {background-color: #CDE3F4; border: 1px solid #2497F4;text-decoration: none;}
+.ql-editor .diff-html-changed {
+    background-color: #FFFEE8;
+    text-decoration: none;
+}
+
+.ql-editor .diff-html-added {
+    background-color: #DFF0D8;
+    text-decoration: none;
+}
+
+.ql-editor .diff-html-removed {
+    background-color: #CDE3F4;
+    text-decoration: none;
+}
+
+.error .diff-html-changed,
+.error .diff-html-added,
+.error .diff-html-removed {
+	color: black;
+}
+
+
+
+.field-conflict select,
+.field-conflict input,
+.field-conflict textarea,
+.field-conflict .advanced-wrapper {
+	border: 1px solid red;
+}
+
+.k-grid-content td {
+	height: 30px;
+}
+
+#filters select,
+.fakeSelect {
+	border: none;
+	background: none;
+	-webkit-appearance: none; 
+	-moz-appearance: none;
+	appearance: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	font-size: 16px;
+	font-family: "Open Sans", serif;
+	width: auto;
+	text-decoration: underline;
+	padding: 0;
+	max-width: none;
+}
+
+#filters select:after {
+    top: 50%;
+    left: 90%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0);
+    border-top-color: #a4a4a4;
+    border-width: 5px;
+    margin-top: -2px;
+    z-index: 100;
+}
+
+.field > .k-widget {
+	width: 95% !important;
+}
+
+
+/** WINDOW **/
+
+.window {
+	border: 1px solid grey;
+	background: white;
+	position: absolute;
+	max-width: 100%;
+	min-width: 300px;
+}
+.window .title {
+	width: 100%;
+	padding: 10px;
+	background: #EEE;
+}
+.window .title .button {
+	float: right;
+	margin: -10px;
+	width: 30px;
+	height: 30px;
+	border: 0;
+	background-color: #DDD;
+}
+.window .client {
+	padding: 10px;
+}
+
+.shell .k-window-titlebar {
+	height: 30px;
+	vertical-align: middle;
+    background-color: #FFFFFF;
+}
+.shell .k-window-titlebar .k-window-action .k-icon {
+	
+	background: 0;
+}
+.shell .k-window-titlebar .k-window-action,
+.shell .k-window-titlebar .k-window-action:hover {
+	width: 30px;
+	height: 30px;
+	background: none;
+	padding: 0;
+}
+.shell .k-window-titlebar .k-window-action .k-i-minimize,
+.shell .k-window-titlebar .k-window-action .k-i-minimize:hover,
+.shell .k-window-titlebar .k-state-hover .k-i-minimize{
+	margin: 3px;
+	width: 24px;
+	height: 24px;
+	background: url(../img/window-minimize.png) 0 0 no-repeat;
+}
+.shell .k-window-titlebar .k-window-action .k-i-maximize,
+.shell .k-window-titlebar .k-window-action .k-i-maximize:hover,
+.shell .k-window-titlebar .k-state-hover .k-i-maximize,
+.shell .k-window-titlebar .k-window-action .k-i-restore,
+.shell .k-window-titlebar .k-window-action .k-i-restore:hover,
+.shell .k-window-titlebar .k-state-hover .k-i-restore {
+	margin: 3px;
+	width: 24px;
+	height: 24px;
+	background: url(../img/window-maximize.png) 0 0 no-repeat;
+}
+.shell .k-window-titlebar .k-window-action .k-i-close,
+.shell .k-window-titlebar .k-window-action .k-i-close:hover,
+.shell .k-window-titlebar .k-state-hover .k-i-close {
+	margin: 3px;
+	width: 24px;
+	height: 24px;
+	background: url(../img/window-close.png) 0 0 no-repeat;
+}
+
+.window-container {
+	padding: 0;
+	margin: 0;
+	height: 100vh;
+	background: #BBB;
+}
+
+
+.window-container .row {
+	padding: 0;
+	margin: 0;
+}
+.window-container .item-view {
+	height: 100%;
+	margin-top: -50px;
+	padding-top: 50px
+}
+.window-container .item-listing,
+.window-container .item-detail {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+.window-container .tree-view .item-list {
+	padding-left: 10px;
+}
+#collapsibleListGroup {
+	
+	
+}
+.window-container .toolbars {
+	position: fixed;
+	width: 100vw;
+	z-index: 1000;
+}
+.window-container .toolbars-spacer {
+	height: 180px;
+	margin-bottom: 10px;
+}
+.window-container .k-toolbar,
+.window-container .item-actions {
+	padding-left: 10px;
+}
+
+.window-container .panel-heading a {
+	padding: 0;
+}
+
+.k-grid-content td {
+	vertical-align: top !important;
+}
+
+
+
+@media print {
+	.k-toolbar,
+	.k-grid-toolbar,
+	.item-listing,
+	.item-actions,
+	.message-panel {
+		display: none !important;
+	}
+	.k-grid-footer {
+		padding-right: 0px !important;
+	}
+	.item-detail {
+		width: 100%;
+		overflow: visible !important;
+	}
+	select,
+	input,
+	textarea {
+		-webkit-appearance: none !important;
+		-webkit-box-shadow: none !important;
+		appearance: none !important;
+		box-shadow: none !important;
+		border:0px !important;
+		outline: none !important;
+	}
+	.field {
+		display: inline-block !important;
+		width: 100% !important;
+	}
+	input.form-control {
+		display: inline-block !important;
+		width: 80% !important;
+	}
+	select.form-control {
+		display: inline-block !important;
+		width: 80% !important;
+	}
+}
+
+

@@ -1,0 +1,37 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+
+    providers:
+        db_provider:
+            entity:
+                class: AppBundle:User
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        secured_area:
+            anonymous: ~
+            http_basic: ~
+            provider: db_provider
+            form_login:
+                login_path: /auth/login
+                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path: /auth/logout
+                invalidate_session: false
+
+        open:
+            pattern: ^/api/v1
+            anonymous: true
+
+    access_control:
+        - { path: ^/account, roles: ROLE_USER }
+        - { path: ^/items, roles: ROLE_USER }
+        - { path: ^/files, roles: ROLE_USER }
+        - { path: ^/mailbox, roles: ROLE_USER }

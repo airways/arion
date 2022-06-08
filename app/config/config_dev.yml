@@ -1,0 +1,43 @@
+imports:
+    - { resource: config.yml }
+
+parameters:
+    http_protocol: http
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_dev.yml"
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+monolog:
+    handlers:
+        main:
+            type: rotating_file
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+            # Remove !doctrine from this line to enable logging of SQL queries
+            channels: [!event, !doctrine]
+            max_files: 10
+            formatter: monolog.ms_line_formatter
+        console:
+            type:   console
+            bubble: false
+            channels: [!event, !doctrine]
+            formatter: monolog.ms_line_formatter
+        # uncomment to get logging in your browser
+        # you may have to allow bigger header sizes in your Web server configuration
+        #firephp:
+        #    type:   firephp
+        #    level:  info
+        #chromephp:
+        #    type:   chromephp
+        #    level:  info
+
+swiftmailer:
+    #delivery_address: isaac@example.com
+    logging: true

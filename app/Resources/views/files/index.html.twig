@@ -1,0 +1,32 @@
+{% extends 'layouts/window.html.twig' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="row panel">
+    <br/>
+        {% if files|length > 0 %}
+        {% for file in files %}
+            <div class="col-xs-12 col-sm-1 col-md-1">
+                <i class="glyphicon glyphicon-{{ file.glyph }}" style="font-size: 40px;"></i>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-8">
+                <h4 class="list-group-item-heading"><a href="/files/{{ file.filename }}">{{ file.filename }}</a></h4>
+                <p class="list-group-item-text">On <a href="/items/{{ file.itemTypePluralName }}?id={{ file.itemId }}">{{ file.itemTitle }}</a>
+            </div>
+
+            <div class="col-xs-12 col-sm-3 col-md-3">
+                {{ file.createdAt|date('M d') }}
+                at
+                {{ file.createdAt|date('g:ia') }}
+            </div>
+        <br/><br/><br/><br/>
+        {% endfor %}
+        {% else %}
+        <div>&nbsp; &nbsp; No files found!</div>
+        {% endif %}
+        <br/>
+    </div>
+</div>
+
+{% endblock %}

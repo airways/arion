@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: 3307
+    database_name: arion_dev
+    database_user: arion_dev
+    database_password: s08gj083gpdfpg8f89
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: 7a741991caa2f8844ec24bfe73158ddec9e3c59a

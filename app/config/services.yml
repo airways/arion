@@ -1,0 +1,184 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    monolog.ms_line_formatter:
+        class: Monolog\Formatter\LineFormatter
+        arguments: [~, ~, true]
+
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.default_controller:
+        class: AppBundle\Controller\DefaultController
+        arguments: ["@logger", "@router", "@templating"]
+        autowire: true
+    app.auth_controller:
+        class: AppBundle\Controller\Auth
+        arguments: ["@logger", "@router", "@templating", "@form.factory", "@security.password_encoder", "@doctrine"]
+        autowire: true
+    app.items_controller:
+        class: AppBundle\Controller\Items
+        arguments: ["@logger", "@router", "@templating"]
+        autowire: true
+    app.mailbox_controller:
+        class: AppBundle\Controller\Mailbox
+        arguments: ["@logger"]
+        autowire: true
+    app.emailchecker_controller:
+        class: AppBundle\Controller\EmailChecker
+        autowire: true
+    app.file_controller:
+        class: AppBundle\Controller\Files
+        arguments: ["@logger", "@router", "@templating", "@s3client"]
+        autowire: true
+    app.settings_controller:
+        class: AppBundle\Controller\Settings
+        arguments: ["@logger", "@router", "@templating"]
+        autowire: true
+    app.api_controller:
+        class: AppBundle\Controller\Api
+        arguments: ["@logger", "@authService", "@itemsService"]
+        autowire: true
+
+    imapPasswordCommand:
+        class: AppBundle\Command\ImapPasswordEncryptCommand
+        autowire: true
+        tags:
+            - { name: console.command }
+
+    accountRepository:
+        class: AppBundle\Entity\AccountRepository
+        #why doesn't this work??
+        #factory_service: "@doctrine"
+        #factory_method: getRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:Account"]
+    fieldRepository:
+        class: AppBundle\Entity\FieldRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:Field"]
+        calls:
+            - [initService, ["@logger"]]
+    itemRepository:
+        class: AppBundle\Entity\ItemRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:Item"]
+        calls:
+            - [initService, ["@logger", "@itemTypeRepository", "@itemValueRepository", "@userRepository", "@fieldRepository", "@fieldMetaFactory", "@authService"]]
+    itemValueRepository:
+        class: AppBundle\Entity\ItemValueRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:ItemValue"]
+        calls:
+            - [initService, ["@logger", "@doctrine"]]
+    itemVersionRepository:
+        class: AppBundle\Entity\ItemVersionRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:ItemVersion"]
+        calls:
+            - [initService, ["@logger", "@itemTypeRepository", "@userRepository", "@fieldRepository", "@fieldMetaFactory"]]
+    itemTypeRepository:
+        class: AppBundle\Entity\ItemTypeRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:ItemType"]
+        calls:
+            - [initService, ["@logger", "@doctrine"]]
+    mailboxRepository:
+        class: AppBundle\Entity\MailboxRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:Mailbox"]
+    mailboxMessageRepository:
+        class: AppBundle\Entity\MailboxMessageRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:MailboxMessage"]
+    userRepository:
+        class: AppBundle\Entity\UserRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:User"]
+        calls:
+            - [initService, ["@logger"]]
+    userSettingRepository:
+        class: AppBundle\Entity\UserSettingRepository
+        factory: ["@doctrine", getRepository]
+        arguments: ["AppBundle:UserSetting"]
+
+    authService:
+        class: AppBundle\Service\AuthService
+        arguments: ["@logger", "@userRepository", "@security.password_encoder", "@fieldRepository"]
+        autowire: true
+    siteService:
+        class: AppBundle\Service\SiteService
+        arguments: ["@logger"]
+        autowire: true
+    accountService:
+        class: AppBundle\Service\AccountService
+        arguments: ["@logger"]
+        autowire: true
+    itemsService:
+        class: AppBundle\Service\ItemsService
+        arguments: ["@logger", "@router", "@templating"]
+        autowire: true
+        calls:
+            - [setContainer, ["@service_container"]]
+    itemTypesService:
+        class: AppBundle\Service\ItemTypesService
+        arguments: ["@logger"]
+        autowire: true
+    mailboxService:
+        class: AppBundle\Service\MailboxService
+        arguments: ["@logger"]
+        autowire: true
+    imapCheckerService:
+        class: AppBundle\Service\ImapChecker
+        arguments: ["@logger", "@templating", "@mailer"]
+        autowire: true
+    notificationService:
+        class: AppBundle\Service\NotificationService
+        arguments: ["@logger", "@templating", "@mailer"]
+        autowire: true
+    fileService:
+        class: AppBundle\Service\FileService
+        arguments: ["@logger"]
+        autowire: true
+    settingsService:
+        class: AppBundle\Service\SettingsService
+        arguments: ["@logger"]
+        autowire: true
+    macroService:
+        class: AppBundle\Service\TextMacroService
+        arguments: ["@logger", "@router", "@authService", "@itemRepository", "@autolinkService"]
+        autowire: true
+        tags:
+            - { name: twig.extension }
+    autolinkService:
+        class: AppBundle\Service\AutolinkService
+        arguments: ["@logger", "@router"]
+        autowire: true
+    encryptionService:
+        class: AppBundle\Service\EncryptionService
+        arguments: ["%enc_key%"]
+        autowire: true
+
+    fieldMetaFactory:
+        class: AppBundle\Fields\Meta\FieldMetaFactory
+        arguments: ["@logger"]
+        autowire: true
+
+    fileField:
+        class: AppBundle\Fields\FileField
+        scope: prototype
+        arguments: ["@logger", "@templating", "@authService", "@s3client"]
+
+    s3client:
+        class: Aws\S3\S3Client
+        arguments: [{version:'2006-03-01', region: 'us-west-2' }]
+
+    sessionHandler:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        public:    false
+        arguments:
+            - 'mysql:dbname=%database_name%;host=%database_host%'
+            - { db_username: %database_user%, db_password: %database_password% }

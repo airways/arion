@@ -1,0 +1,43 @@
+{% extends 'layouts/dialog.html.twig' %}
+
+{% block dialog_content %}
+<form action="{{ path('login_check') }}" method="post">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+    {% if error %}
+        <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    {% if message %}
+        <div class="success">{{message}}</div>
+    {% endif %}
+
+    <p class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+        <input type="text" class="form-control input-lg" name="_username" placeholder="me@example.com" />
+    </p>
+
+    <p class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+        <input type="password" class="form-control input-lg" name="_password" placeholder="password" />
+    </p>
+
+    <p><button id="login" type="submit" class="btn btn-success btn-lg"
+        onclick="$('#login-icon').css('display', 'inline-block');">Login</button>
+        <span id="login-icon" class="loading-icon">Loading...</span></p>
+<!--
+    <p>
+        <a href="{{ path('auth_forgot_password') }}">Forgot password</a> |
+        <a href="{{ path('auth_register') }}">Register</a>
+    </p>
+-->
+</form>
+
+<div>
+<small class="text-muted">If you have any problems logging in, please contact your account representative.
+<!--us at
+If you have any problems logging in or creating an account, please contact us at 
+<b>support [at] arioncrm.com</b>.-->
+</small>
+</div>
+{% include 'partials/credits.html.twig' %}
+
+{% endblock %}

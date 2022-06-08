@@ -1,0 +1,38 @@
+<input type="hidden" name="item[{{ item.get('id') }}][{{ field.name }}]" value="1" />
+{% set lastSubValueId = -1 %}
+<table class="multitext">
+    <tr>
+        <th>{{ field.option('valueHeading', 'Value') }}</th><th>{% if field.option('editable') %}Remove{% else %}&nbsp;{% endif %}</th>
+    </tr>
+{% if values[0] is defined %}
+{% for subValueId, value in values[0] %}
+    <tr>
+    {% set lastSubValueId = subValueId %}
+    <td class="multi-value">
+        <!-- {{ subValueId }} -->
+        {% if field.option('editable') %}
+        <input type="text" name="item[{{ item.get('id') }}][{{ field.name }}][0][{{ subValueId }}]" class="form-control" value="{{ value }}" />
+        {% else %}
+        <p>{{ value|purify }}</p>
+        {% endif %}
+    </td>
+    <td class="multi-remove">
+        {% if field.option('editable') %}
+        <input type="checkbox" name="cmd[{{ item.get('id') }}][{{ field.name }}][0][{{ subValueId }}]" value="delete" />
+        {% else %}
+        &nbsp;
+        {% endif %}
+    </td>
+    </tr>
+{% endfor %}
+{% endif %}
+
+<tr>
+    <td class="multi-value">
+        <input type="text" type="text" name="item[{{ item.get('id') }}][{{ field.name }}][0][{{ lastSubValueId+1 }}]" class="form-control" value="" placeholder="{{ field.option('newRowLabel', 'New Row') }}" />
+    </td>
+    <td class="multi-remove">
+        &nbsp;
+    </td>
+</tr>
+</table>

@@ -1,0 +1,16 @@
+<div id="{{ fieldId }}" data-field-name="{{ fieldName }}"></div>
+<script>
+jQuery(function(){
+    var json = {{ json|raw }};
+    json.dataSource.schema = {
+        model: {
+            {{costFunctions|raw}}
+        }
+    };
+    //json.dataSource = new kendo.data.DataSource(json.dataSource);
+    console.log(json);
+    jQuery("#{{ selector }}").kendoGrid(json);
+});
+</script>
+<input type="hidden" id="{{ fieldId }}_value" name="{{ fieldName }}"
+    value="{{value}}" />

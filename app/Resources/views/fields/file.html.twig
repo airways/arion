@@ -1,0 +1,25 @@
+{% set lastSubValueId = -1 %}
+<div class="form-control" style="height: auto;">
+    {% if values[0] is defined %}
+        {% for subValueId, value in values[0] %}
+            {% set lastSubValueId = subValueId %}
+            {% if value != "" %}
+            <p>
+
+            <a href="/files/{{ value  }}" {% if not value|fileShouldBeDownloaded %}target="_blank"{% endif %}>{{ value  }}</a>
+            &mdash; 
+                Posted by
+                {{ valuesMeta[0][subValueId].createdBy }}
+                on
+                {{ valuesMeta[0][subValueId].createdAt|date('M d') }}
+                at
+                {{ valuesMeta[0][subValueId].createdAt|date('g:ia') }}
+            
+                <input type="checkbox" name="cmd[{{ item.get('id') }}][{{ field.name }}][0][{{ subValueId }}]" value="delete" /> Delete
+            </p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <input type="file" name="files[{{item.get('id')}}][{{field.name}}][0][{{ lastSubValueId+1 }}]" />
+</div>

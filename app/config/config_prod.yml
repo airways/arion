@@ -1,0 +1,33 @@
+imports:
+    - { resource: config.yml }
+
+parameters:
+    http_protocol: https
+
+#framework:
+#    validation:
+#        cache: validator.mapping.cache.apc
+#    serializer:
+#        cache: serializer.mapping.cache.apc
+
+#doctrine:
+#    orm:
+#        metadata_cache_driver: apc
+#        result_cache_driver: apc
+#        query_cache_driver: apc
+
+monolog:
+    handlers:
+        main:
+            type:         stream
+            path:         'php://stderr'
+            level: debug
+            channels: [!event, !doctrine]
+            formatter: monolog.ms_line_formatter
+# nested:
+#     type:  stream
+#     path: 'php://stderr'
+#     level: error
+# console:
+#     type:  console
+#     level: error

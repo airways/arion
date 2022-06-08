@@ -1,0 +1,133 @@
+{% extends 'layouts/window.html.twig' %}
+
+{% block content %}
+
+{% if listing.message %}
+<div class="panel panel-danger row">{{listing.message}}</div>
+{% endif %}
+<div class="row listing-filters toolbars">
+	<div>
+	<form method="get" id="filters">
+		<div class="k-toolbar k-widget k-toolbar-resizable">
+		<nobr><label>Filter <b>{{ listing.itemType.pluralLabel }}</b> to</label></nobr>
+
+		{% for i, field in listing.filterFields %}
+			<nobr>
+				{{field.render(true, listing.filters[field.name])|raw}}
+			</nobr>
+		{% endfor %}
+		
+		<nobr><label>with </label></nobr>
+		<select name="view" class="form-control">
+			<option value="edit">Edit view</option>
+			<option value="tree" selected>Tree view</option>
+		</select>
+		</div>
+
+		<div class="k-toolbar k-widget k-toolbar-resizable">
+
+		{% for childListing in childListingFilters %}
+		<div class="child-filters">
+			<nobr><label>then filter <b>{{ childListing.itemType.pluralLabel }}</b> to</label></nobr>
+			{% for i, field in childListing.filterFields %}
+				{% if field.fieldType != 'Relationship' or (field.fieldType == 'Relationship' and field.fieldItemType.pluralName != listing.itemType.pluralName) %}
+				<nobr>
+					{{field.render(true, childListing.filters[field.name])|raw}}
+				</nobr>
+				{% endif %}
+			{% endfor %}
+		</div>
+		{% endfor %}
+		<input type="submit" class="btn btn-primary" value="Go" />
+		</div>
+		
+		<div class="k-toolbar k-widget k-toolbar-resizable">
+			<a href="{{listing.createUrl}}" class="btn btn-secondary new-item">
+				New {{ listing.itemType.label }}
+			</a>
+		</div>
+	</form>
+	</div>
+</div>
+<div class="row listing-filters toolbars-spacer">
+</div>
+
+<div class="row tree-view client-area">
+
+<div class="client-area-inner">
+	<div class="list-group col-md-12 item-list">
+		
+	{% if listing.items|length > 0 %}
+	    {% for item in listing.items %}
+	    <li class="list-group-item child-listing-wrapper">
+	    	<div class="item-wrapper">
+		    <a href="{{listing.viewUrl}}{{item.get('id')}}">
+				<h2 class="list-group-item-heading">{{item.get('title')}}</h2>
+				<p class="list-group-item-text">
+
+				{% for fieldName, value in item.extraTitleValues %}
+					{% if value != item.get('title') %}
+					{{ fieldName }}: {{ value }}{% if not loop.last %}, {% endif %}
+					{% endif %}
+				{% endfor %}
+
+				</p>
+			</a>
+
+			{% if childListings[item.get('id')] is defined %}
+				{% for childListing in childListings[item.get('id')] %}
+				<div class="child-listing">
+					<h3>{{ childListing.itemType.pluralLabel }}</h3>
+					
+					<div class="list-group item-list">
+					<a href="{{ childListing.createUrl}}" class="list-group-item new-item">
+						New {{ childListing.itemType.label }} for this {{ listing.itemType.label }}
+					</a>
+					{% if childListing.items|length > 0 %}
+					{% for childItem in childListing.items %}
+						<a class="list-group-item" stlye="display: block" href="{{ childListing.viewUrl }}{{childItem.get('id')}}">
+							<h4>#{{ childItem.get('id') }} &mdash; {{ childItem.get('title') }}</h4>
+						
+
+						{% for fieldName, value in childItem.extraTitleValues %}
+							{% if value != childItem.get('title') %}
+							{{ fieldName }}: {{ value }}{% if not loop.last %}, {% endif %}
+							{% endif %}
+						{% endfor %}
+						</a>
+					{% endfor %}
+					{% else %}
+					<div class="list-group-item alert alert-info">
+						No items matching filter
+					</div>
+					{% endif %}
+					</div>
+				</div>
+				{% endfor %}
+			{% else %}
+				<!--<div class="child-listing">
+					<div class="list-group item-list">
+						<div class="list-group-item alert alert-info">
+							No child items
+						</div>
+					</div>
+				</div>-->
+			{% endif %}
+			</div>
+		</li>
+	    {% endfor %}
+	{% else %}
+	    <div class="list-group-item error">No {{listing.itemType.label}} items found!</div>
+	{% endif %}
+		
+	</div>
+
+	{% if get %}
+	<div class="panel col-md-8">
+	{% include 'items/detail.html.twig' %}
+	</div>
+	{% endif %}
+
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'layouts/dialog.html.twig' %}
+
+{% block dialog_content %}
+{{ form_start(form) }}
+    <div class="error">{{message}}</div>
+<!--
+    <p class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+        <input type="text" class="form-control input-lg" name="user_form[email]" placeholder="keverdeen@example.com" />
+    </p>
+
+    <p class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+        <input type="text" class="form-control input-lg" name="user_form[username]" placeholder="katever" />
+    </p>
+
+    <p class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+        <input type="password" class="form-control input-lg" name="user_form[plainPassword][first]" placeholder="password" />
+    </p>
+
+    <p class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+        <input type="password" class="form-control input-lg" name="user_form[plainPassword][second]" placeholder="confirm password" />
+    </p>
+-->
+    <p><button id="login" type="submit" class="btn btn-success btn-lg"
+        onclick="$('#login-icon').css('display', 'inline-block');">Register</button>
+        <span id="login-icon" class="loading-icon">Loading...</span></p>
+
+    <p>
+        <a href="{{ path('auth_login') }}">Actually, I already did this...</a>
+    </p>
+
+{{ form_end(form) }}
+
+{% include 'partials/credits.html.twig' %}
+
+{% endblock %}

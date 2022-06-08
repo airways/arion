@@ -1,0 +1,34 @@
+== Setup ==
+
+Two client items
+
+    - Client A
+    - Client B
+
+Two contact items, each assigned to one client
+    
+    - Contact A
+    - Contact B
+
+Two ticket items
+
+    - Ticket A
+    - Ticket B
+
+
+== Tests ==
+
+Test 1
+    - Login as Contact A
+    - Contact A's view request contains only Ticket A
+    - Contact A cannot do a item/get request for Ticket B
+
+Test 2
+    - Login as Contact B
+    - Contact B's view request contains only Ticket B
+    - Contact A cannot do a item/get request for Ticket A
+
+Test 3
+    - Login as Admin
+    - Admin's view request contains Ticket A, Ticket B
+    - Admin A can do a item/get request for Ticket A or Ticket B

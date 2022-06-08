@@ -1,0 +1,9 @@
+{% if filterMode %}
+    <label>{{ field.option('filterLabel', field.name) }}</label>
+{% endif %}
+<select name="{{ fieldName }}" class="form-control">
+	<option value="">{{ noneLabel }}</option>
+    {% for id, user in users %}
+		<option value="{{ id }}" {% if value == id %}selected="selected"{% endif %}>{{ id }}: {{ user }}</option>
+	{% endfor %}
+</select>

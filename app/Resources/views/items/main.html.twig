@@ -1,0 +1,98 @@
+{% extends 'layouts/window.html.twig' %}
+
+{% block content %}
+
+<script>
+//*
+if (window.location.search.indexOf('XDEBUG_PROFILE=1') == -1 && window==window.top) {
+	location = ('/?openWindow=' + location).replace('viewOnly=1&', '').replace('?&', '?');
+}
+// */
+</script>
+
+{% if listing.message %}
+<div class="panel panel-danger row">{{listing.message}}</div>
+{% endif %}
+
+<div class="row listing-filters">
+	<form method="get" id="filters" class="k-toolbar k-widget k-toolbar-resizable">
+	{# <h2>{{ listing.itemType.pluralLabel }}</h2> #}
+	<nobr><label>Filter</label></nobr>
+	{% for i, field in listing.filterFields %}
+		<nobr>
+			{{field.render(true, listing.filters[field.name])|raw}}
+		</nobr>
+	{% endfor %}
+	
+	<nobr><label>with</label></nobr>
+	<select name="view" class="form-control">
+		<option value="edit" selected>Edit view</option>
+		<option value="tree">Tree view</option>
+	</select>
+
+	<nobr><label>sorted by</label></nobr>
+	<select name="sort">
+		<option value="" {% if listing.sort == "item_id*desc" %}selected="selected"{% endif %}>id &#9661;</option>
+		{# built in fields not yet implemented in sort
+		<option value="item_id*asc" {% if listing.sort == "item_id*asc" %}selected="selected"{% endif %}>Creation Date ASC</option> #}
+	{% for i, field in listing.sorterFields %}
+		<option value="{{field.name}}*desc" {% if listing.sort == "#{field.name}*desc" %}selected="selected"{% endif %}>{{field.label}} &#9661;</option>
+		<option value="{{field.name}}*asc" {% if listing.sort == "#{field.name}*asc" %}selected="selected"{% endif %}>{{field.label}} &#9651;</option>
+		
+	{% endfor %}
+	</select>
+	<input type="submit" class="btn btn-primary" value="Go" />
+	</form>
+</div>
+
+<div class="row item-view">
+	<div class="item-listing panel-group col-xs-4 col-sm-4 col-md-4" role="tablist">
+		<div class="panel panel-default">
+			<div id="newItemGroupHeading" class="panel-heading" role="tab">
+				<a href="{{listing.createUrl}}" class="panel-title">
+					<h4>New {{ listing.itemType.label }}</h4>	
+				</a>
+			</div>
+			<a href="#collapsibleListGroup" id="collapsibleListGroupHeading" class="list-group-item panel-title" role="tab">
+				<h4 id="item-num-message"></h4><span id="item-num" class="badge">100</span>
+			</a>
+
+			<div id="collapsibleListGroup" class="panel-collapse collapse in" role="tabpanel">
+				<div class="list-group item-list">
+				{% if listing.items|length > 0 %}
+				    {% for item in listing.items %}
+				    <a href="{{listing.viewUrl}}{{item.get('id')}}" class="list-group-item {% if get.item is defined %}{% if get.item.get('id') == item.get('id') %}active{% endif %}{% endif %}">
+						<h4 class="list-group-item-heading">#{{item.get('id')}} &mdash; {{item.get('title')}}</h4>
+						<p class="list-group-item-text">
+
+						{% for fieldName, value in item.extraTitleValues %}
+							{% if value != item.get('title') %}
+							{{ fieldName }}: {{ value }}{% if not loop.last %}, {% endif %}
+							{% endif %}
+						{% endfor %}
+
+						</p>
+					</a>
+				    {% endfor %}
+				{% else %}
+				    <div class="list-group-item">No {{listing.itemType.label }} items found!</div>
+				{% endif %}	
+				</div>
+			</div>
+		</div>
+	</div>
+		
+		
+	{% if get is defined and get.item is defined %}
+	<div class="panel item-detail col-xs-8 col-sm-8 col-md-8">
+	{% include 'items/detail.html.twig' %}
+	</div>
+	{% else %}
+	<div class="panel item-detail col-xs-8 col-sm-8 col-md-8">
+
+	<div class="inner-panel tour-create-item"><i class="glyphicon glyphicon-chevron-left"></i> Click New Item to create a new {{ listing.itemType.label }}!</div>
+	</div>
+	{% endif %}
+</div>
+
+{% endblock %}

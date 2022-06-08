@@ -1,0 +1,18 @@
+{% extends 'layouts/normal.html.twig' %}
+
+{% block base_body_class %}dialog{% endblock %}
+{% block content %}
+<!-- DIALOG -->
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 panel panel-default">
+
+            <h1 class="margin-base-vertical">Arion CRM/PM</h1>
+            
+            {% block dialog_content %}{% endblock %}
+
+    </div>
+</div>
+
+{% endblock %}
+
